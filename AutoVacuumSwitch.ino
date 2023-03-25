@@ -3,7 +3,7 @@
 #define CURRENT_SENSE A3
 #define BUTTON_IN A0
 #define BUTTON_OUT A1
-#define OVERRUN_MS  8000
+#define OVERRUN_MS  10000
 #define MIN_AMPS  1.0
 
 //------------------------------------------------------------
@@ -58,7 +58,7 @@ void loop() {
 
   bool powerOn = getAmps() > MIN_AMPS; // 1 amp draw, switch on
   
-  if( powerOn && start_time == 0)
+  if( powerOn )
   {
     delay(150);
     
@@ -75,8 +75,10 @@ void loop() {
 
   bool buttonPressed = digitalRead(BUTTON_IN) == false;  // get the inverted state of the button
   
-  if( buttonPressed )
+  if( buttonPressed ) {
+    start_time = 0;
     powerOn = true;
+  }
     
   digitalWrite(RELAY, powerOn);
 }
